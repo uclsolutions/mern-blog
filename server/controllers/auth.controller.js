@@ -1,6 +1,6 @@
 import User from '../models/user.model.js'
 import bcrypt, { hashSync } from 'bcrypt'
-export const signup= async(req, res)=>{
+export const signup= async(req, res, next)=>{
     console.log(req.body)
     const {username, email, password}= req.body
     if(!username || !email || !password){
@@ -11,6 +11,6 @@ export const signup= async(req, res)=>{
         const savedUser = await User.create({username, email, password:hashedPasword})
         return res.status(201).json({success:true, message:'User has been created', savedUser})
     } catch (error) {
-        console.log(error)
+        next(error)
     }
 }
